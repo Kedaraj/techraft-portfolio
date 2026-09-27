@@ -92,8 +92,8 @@ const Skills = () => {
             if (!card) return;
             const offset = i - p;
             
-            const radius = 1800; 
-            const angleSpread = 18; 
+            const radius = Math.min(1800, window.innerWidth * 1.15); 
+            const angleSpread = 16; 
             
             const angle = offset * angleSpread;
             const rad = angle * Math.PI / 180;
@@ -172,27 +172,26 @@ const Skills = () => {
     <section 
       id="skills"
       ref={sectionRef} 
-      className="relative w-full h-screen bg-[#0b0b0b] text-white overflow-hidden flex items-center justify-center md:[perspective:1000px] select-none"
+      className="relative w-full h-screen bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden flex items-center justify-center md:[perspective:1000px] select-none transition-colors duration-300"
     >
-      {/* Dynamic Netflix Dark Background Vignettes */}
+      {/* Dynamic Background Vignettes */}
       {skillCategories.map((_, i) => (
         <div 
           key={i}
           ref={el => bgRefs.current[i] = el}
-          className="absolute inset-0 z-0 pointer-events-none opacity-0 bg-gradient-to-tr from-black via-[#140203] to-black"
+          className="absolute inset-0 z-0 pointer-events-none opacity-0 bg-gradient-to-tr from-[var(--bg-main)] via-[var(--bg-surface)] to-[var(--bg-main)]"
         />
       ))}
 
-      {/* Massive Background Typography (Netflix Red & White Outline) */}
+      {/* Massive Background Typography */}
       <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none overflow-hidden">
         {skillCategories.map((_, i) => (
           <h1 
             key={`text-${i}`}
             ref={el => textRefs.current[i] = el}
-            className="absolute text-[20vw] md:text-[16vw] font-black uppercase text-white/[0.03] leading-none tracking-tighter select-none pointer-events-none"
+            className="absolute text-[20vw] md:text-[16vw] font-black uppercase text-[var(--text-main)] opacity-[0.04] leading-none tracking-tighter select-none pointer-events-none"
             style={{ 
                fontFamily: "'Bebas Neue', sans-serif",
-               WebkitTextStroke: `1.5px ${i % 2 === 0 ? 'rgba(229,9,20,0.25)' : 'rgba(255,255,255,0.12)'}`,
                opacity: 0 
             }}
           >
@@ -210,45 +209,42 @@ const Skills = () => {
           <div 
             key={i}
             ref={el => cardsRef.current[i] = el}
-            className="md:absolute relative shrink-0 snap-center w-[82vw] sm:w-[340px] md:w-[380px] lg:w-[400px] h-[430px] md:h-[480px] rounded-[28px] p-6 sm:p-8 bg-[#141414]/95 backdrop-blur-2xl border border-white/15 flex flex-col justify-between overflow-hidden group shadow-[0_30px_60px_rgba(0,0,0,0.9)] hover:border-red-600/80 transition-colors duration-500"
+            className="md:absolute relative shrink-0 snap-center w-[82vw] sm:w-[340px] md:w-[380px] lg:w-[400px] h-[430px] md:h-[480px] rounded-[28px] p-6 sm:p-8 bg-[var(--bg-card)] backdrop-blur-2xl border border-[var(--border-card)] flex flex-col justify-between overflow-hidden group shadow-lg hover:border-[var(--border-card-hover)] transition-all duration-300"
           >
-            {/* Inner Red Glossy Reflection */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-red-600/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-20" />
-            
             {/* Top Card Metadata */}
             <div className="flex items-center justify-between relative z-10">
-              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-red-500 bg-red-600/10 px-3 py-1 rounded border border-red-600/20">
+              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[var(--text-secondary)] bg-[var(--badge-bg)] px-3 py-1 rounded-full border border-[var(--border-card)]">
                 {category.tag}
               </span>
-              <span className="text-xs font-mono text-white/40">
+              <span className="text-xs font-mono text-[var(--text-muted)]">
                 [ 0{i + 1} / 06 ]
               </span>
             </div>
 
             {/* Middle Title & Description */}
-            <div className="space-y-4 relative z-10 my-auto">
-              <h3 className="text-3xl md:text-4xl font-black text-white tracking-tight group-hover:text-red-500 transition-colors duration-300">
+            <div className="space-y-3.5 relative z-10 my-auto">
+              <h3 className="text-2xl md:text-3xl font-black text-[var(--text-main)] tracking-tight">
                 {category.title}
               </h3>
-              <p className="text-sm md:text-base text-white/70 font-light leading-relaxed">
+              <p className="text-sm md:text-base text-[var(--text-secondary)] font-light leading-relaxed">
                 {category.desc}
               </p>
             </div>
 
             {/* Bottom Skill Badges */}
-            <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10 relative z-10">
+            <div className="flex flex-wrap gap-2 pt-4 border-t border-[var(--border-card)] relative z-10">
               {category.skills.map((skill, sIdx) => (
                 <span 
                   key={sIdx}
-                  className="text-xs font-mono text-white/80 bg-white/5 border border-white/10 px-3 py-1 rounded group-hover:border-red-600/30 transition-colors"
+                  className="text-xs font-mono text-[var(--text-secondary)] bg-[var(--badge-bg)] border border-[var(--border-card)] px-3 py-1 rounded-full group-hover:border-[var(--border-card-hover)] transition-colors"
                 >
                   {skill}
                 </span>
               ))}
             </div>
 
-            {/* Bottom Glow Accent */}
-            <div className="absolute bottom-4 right-4 w-2 h-2 rounded-full bg-red-600 group-hover:shadow-[0_0_15px_#E50914] transition-all" />
+            {/* Bottom Dot Accent */}
+            <div className="absolute bottom-4 right-4 w-2 h-2 rounded-full bg-[var(--accent)] opacity-50 group-hover:opacity-100 transition-all" />
           </div>
         ))}
       </div>

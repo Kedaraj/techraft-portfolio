@@ -104,19 +104,19 @@ const NetflixPreloader = ({ onComplete }) => {
     >
       {/* Cinematic Center Content */}
       <div ref={contentRef} className="flex flex-col items-center gap-5">
-        {/* Glowing Red Cinema Light Indicator */}
+        {/* Glowing Cinema Light Indicator */}
         <div className="relative flex items-center justify-center">
-          <div className="w-3 h-3 rounded-full bg-red-600 shadow-[0_0_20px_#E50914] animate-ping absolute"></div>
-          <div className="w-3 h-3 rounded-full bg-red-600 shadow-[0_0_15px_#E50914]"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_20px_rgba(255,255,255,0.9)] animate-ping absolute"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.9)]"></div>
         </div>
 
-        {/* Cinematic Netflix Studio Title */}
+        {/* Cinematic Studio Title */}
         <div className="flex items-center overflow-hidden">
           {brandName.split("").map((letter, i) => (
             <span
               key={i}
               ref={(el) => (lettersRef.current[i] = el)}
-              className="text-4xl md:text-6xl font-black uppercase text-red-600 tracking-[0.25em] drop-shadow-[0_0_30px_rgba(229,9,20,0.8)] inline-block"
+              className="text-4xl md:text-6xl font-black uppercase text-white tracking-[0.25em] drop-shadow-[0_0_30px_rgba(255,255,255,0.6)] inline-block"
               style={{ fontFamily: "'Bebas Neue', sans-serif" }}
             >
               {letter}
@@ -129,11 +129,11 @@ const NetflixPreloader = ({ onComplete }) => {
         </p>
       </div>
 
-      {/* Skip Button for maximum user control and stability */}
+      {/* Skip Button */}
       <button
         type="button"
         onClick={finish}
-        className="absolute bottom-8 text-[11px] font-mono uppercase tracking-widest text-white/40 hover:text-white transition-colors px-4 py-1.5 rounded-full border border-white/10 hover:border-red-600/50 bg-black/40 backdrop-blur-md cursor-pointer"
+        className="absolute bottom-8 text-[11px] font-mono uppercase tracking-widest text-white/40 hover:text-white transition-colors px-4 py-1.5 rounded-full border border-white/10 hover:border-white/40 bg-black/40 backdrop-blur-md cursor-pointer"
       >
         Skip Intro &rarr;
       </button>

@@ -44,8 +44,8 @@ const CustomCursor = () => {
       const x = e.clientX;
       const y = e.clientY;
 
-      const dotSize = 12;
-      const ringSize = 48;
+      const dotSize = 10;
+      const ringSize = 44;
 
       xToDot(x - dotSize / 2);
       yToDot(y - dotSize / 2);
@@ -61,16 +61,12 @@ const CustomCursor = () => {
       if (target && target.closest && target.closest('a, button, input, textarea, select, [role="button"], .clickable')) {
         gsap.to(ring, { 
           scale: 1.5, 
-          borderColor: 'rgba(229, 9, 20, 0.9)', 
-          backgroundColor: 'rgba(229, 9, 20, 0.12)', 
           duration: 0.2, 
           overwrite: "auto" 
         });
       } else {
         gsap.to(ring, { 
           scale: 1, 
-          borderColor: 'rgba(229, 9, 20, 0.6)', 
-          backgroundColor: 'transparent', 
           duration: 0.2, 
           overwrite: "auto" 
         });
@@ -106,7 +102,7 @@ const CustomCursor = () => {
         ref={spotlightRef}
         className="fixed top-0 left-0 w-[700px] h-[700px] rounded-full pointer-events-none z-[9998] opacity-0 blur-[100px] transition-opacity duration-300 transform-gpu"
         style={{
-          background: 'radial-gradient(circle, rgba(229,9,20,0.22) 0%, rgba(229,9,20,0.06) 45%, transparent 75%)',
+          background: 'radial-gradient(circle, var(--spotlight) 0%, transparent 70%)',
           willChange: 'transform'
         }}
       ></div>
@@ -114,15 +110,22 @@ const CustomCursor = () => {
       {/* Global Custom Cursor Dot */}
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 z-[99999] pointer-events-none w-3 h-3 bg-red-600 rounded-full shadow-[0_0_15px_#E50914] transform-gpu"
-        style={{ willChange: 'transform' }}
+        className="fixed top-0 left-0 z-[99999] pointer-events-none w-2.5 h-2.5 rounded-full transform-gpu transition-colors duration-200"
+        style={{ 
+          backgroundColor: 'var(--cursor-dot)',
+          boxShadow: 'var(--cursor-shadow)',
+          willChange: 'transform' 
+        }}
       ></div>
 
       {/* Global Custom Cursor Ring */}
       <div
         ref={ringRef}
-        className="fixed top-0 left-0 z-[99999] pointer-events-none w-12 h-12 border border-red-600/60 rounded-full flex items-center justify-center backdrop-blur-[1px] transform-gpu"
-        style={{ willChange: 'transform' }}
+        className="fixed top-0 left-0 z-[99999] pointer-events-none w-11 h-11 border rounded-full flex items-center justify-center backdrop-blur-[1px] transform-gpu transition-colors duration-200"
+        style={{ 
+          borderColor: 'var(--cursor-ring)',
+          willChange: 'transform' 
+        }}
       ></div>
     </>
   );

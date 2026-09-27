@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ThemeProvider } from './context/ThemeContext';
 import NetflixPreloader from './components/NetflixPreloader';
 import CustomCursor from './components/CustomCursor';
 import Hero from './components/Hero';
@@ -13,22 +14,24 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   return (
-    <main className="bg-[#050505] min-h-screen text-white relative overflow-x-hidden selection:bg-red-600 selection:text-white">
-      {/* Cinematic Preloader */}
-      {loading && <NetflixPreloader onComplete={() => setLoading(false)} />}
+    <ThemeProvider>
+      <main className="bg-[var(--bg-main)] min-h-screen text-[var(--text-main)] relative overflow-x-hidden transition-colors duration-300">
+        {/* Cinematic Preloader */}
+        {loading && <NetflixPreloader onComplete={() => setLoading(false)} />}
 
-      {/* Global Mouse Hover Effects & Spotlight across ALL sections */}
-      <CustomCursor />
+        {/* Global Mouse Hover Effects & Spotlight across ALL sections */}
+        <CustomCursor />
 
-      {/* Portfolio Sections */}
-      <Hero />
-      <About />
-      <Expertise />
-      <Skills />
-      <Projects />
-      <Contact />
-      <Footer />
-    </main>
+        {/* Portfolio Sections */}
+        <Hero />
+        <About />
+        <Expertise />
+        <Skills />
+        <Projects />
+        <Contact />
+        <Footer />
+      </main>
+    </ThemeProvider>
   );
 }
 

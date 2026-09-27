@@ -58,26 +58,26 @@ const About = () => {
     <section
       id="about"
       ref={sectionRef}
-      className="relative w-full min-h-screen bg-[#050505] text-white py-28 md:py-36 px-6 md:px-12 flex flex-col justify-center select-none overflow-hidden"
+      className="relative w-full min-h-screen bg-[var(--bg-main)] text-[var(--text-main)] py-28 md:py-36 px-6 md:px-12 flex flex-col justify-center select-none overflow-hidden transition-colors duration-300"
     >
-      {/* Background Cinematic Red Ambient Glows */}
-      <div className="absolute top-1/4 left-10 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-[160px] pointer-events-none"></div>
-      <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-red-900/10 rounded-full blur-[160px] pointer-events-none"></div>
+      {/* Background Monochrome Ambient Glows */}
+      <div className="absolute top-1/4 left-10 w-[500px] h-[500px] bg-neutral-500/5 rounded-full blur-[160px] pointer-events-none"></div>
+      <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-neutral-400/5 rounded-full blur-[160px] pointer-events-none"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto w-full space-y-16">
         
         {/* Section Header */}
         <div className="flex flex-col items-start space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded bg-black/80 backdrop-blur-2xl border border-red-600/40 text-xs font-mono uppercase tracking-widest text-white shadow-2xl">
-            <span className="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
-            <span className="text-red-500 font-bold">EPISODE 01</span>
-            <span className="text-white/40">|</span>
-            <span>ABOUT THE ARCHITECT</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--badge-bg)] backdrop-blur-2xl border border-[var(--badge-border)] text-xs font-mono uppercase tracking-widest text-[var(--text-main)] shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-ping"></span>
+            <span className="font-bold">EPISODE 01</span>
+            <span className="opacity-40">|</span>
+            <span className="opacity-80">ABOUT THE ARCHITECT</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-[var(--text-main)]" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
             EPISODE SYNOPSIS <br />
-            <span className="netflix-gradient-text">
-              ORIGIN & VISION.
+            <span className="monochrome-gradient-text">
+              ORIGIN &amp; VISION.
             </span>
           </h2>
         </div>
@@ -89,34 +89,34 @@ const About = () => {
           <div
             ref={addToRefs}
             onMouseMove={handleCardMouseMove}
-            className="md:col-span-7 p-8 md:p-12 bg-[#141414]/90 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-2xl flex flex-col justify-between relative group hover:border-red-600/60 transition-all duration-500 overflow-hidden"
+            className="md:col-span-7 p-6 sm:p-8 md:p-10 bg-[var(--bg-card)] backdrop-blur-2xl border border-[var(--border-card)] rounded-[2rem] shadow-lg flex flex-col justify-between relative group hover:border-[var(--border-card-hover)] transition-all duration-500 overflow-hidden"
           >
             {/* Real-time mouse hover spotlight highlight */}
             <div 
               className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               style={{
-                background: 'radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(229,9,20,0.15), transparent 70%)'
+                background: 'radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--spotlight), transparent 70%)'
               }}
             ></div>
 
-            <div className="absolute top-0 right-0 p-8 text-white/5 font-mono text-7xl font-black pointer-events-none">
+            <div className="absolute top-0 right-0 p-8 text-[var(--text-main)] opacity-[0.06] font-mono text-7xl font-black pointer-events-none select-none">
               01
             </div>
             
-            <div className="space-y-5 relative z-10">
-              <h3 className="text-xs font-mono uppercase tracking-widest text-red-500 font-bold">Cast & Background</h3>
-              <p className="text-lg md:text-xl font-medium text-white/90 leading-relaxed">
-                Operating under <span className="text-white font-bold drop-shadow text-red-400">TECHRAFT</span>, specializing in Artificial Intelligence, Distributed Systems, and Modern Full-Stack Architecture.
+            <div className="space-y-4 relative z-10">
+              <h3 className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] font-bold">Cast &amp; Background</h3>
+              <p className="text-base sm:text-lg md:text-xl font-medium text-[var(--text-main)] leading-relaxed">
+                Operating under <span className="font-bold border-b border-[var(--accent)] pb-0.5">TECHRAFT</span>, specializing in Artificial Intelligence, Distributed Systems, and Modern Full-Stack Architecture.
               </p>
-              <p className="text-sm md:text-base text-white/60 font-light leading-relaxed">
+              <p className="text-sm md:text-base text-[var(--text-secondary)] font-light leading-relaxed">
                 My technical narrative bridges rigorous algorithmic problem-solving with scalable software design, translating complex backend logic into seamless, high-performance user experiences.
               </p>
             </div>
             
-            <div className="pt-8 flex flex-wrap gap-2 relative z-10">
-              <span className="px-3.5 py-1.5 rounded bg-white/5 border border-white/10 text-xs font-mono text-white/80">AI & ML</span>
-              <span className="px-3.5 py-1.5 rounded bg-white/5 border border-white/10 text-xs font-mono text-white/80">Full-Stack Development</span>
-              <span className="px-3.5 py-1.5 rounded bg-white/5 border border-white/10 text-xs font-mono text-white/80">System Architecture</span>
+            <div className="pt-6 flex flex-wrap gap-2 relative z-10">
+              <span className="px-3.5 py-1.5 rounded-full bg-[var(--badge-bg)] border border-[var(--border-card)] text-xs font-mono text-[var(--text-secondary)]">AI &amp; ML</span>
+              <span className="px-3.5 py-1.5 rounded-full bg-[var(--badge-bg)] border border-[var(--border-card)] text-xs font-mono text-[var(--text-secondary)]">Full-Stack Development</span>
+              <span className="px-3.5 py-1.5 rounded-full bg-[var(--badge-bg)] border border-[var(--border-card)] text-xs font-mono text-[var(--text-secondary)]">System Architecture</span>
             </div>
           </div>
 
@@ -124,39 +124,39 @@ const About = () => {
           <div
             ref={addToRefs}
             onMouseMove={handleCardMouseMove}
-            className="md:col-span-5 p-8 md:p-12 bg-[#141414]/90 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-2xl flex flex-col justify-between relative group hover:border-red-600/60 transition-all duration-500 overflow-hidden"
+            className="md:col-span-5 p-6 sm:p-8 md:p-10 bg-[var(--bg-card)] backdrop-blur-2xl border border-[var(--border-card)] rounded-[2rem] shadow-lg flex flex-col justify-between relative group hover:border-[var(--border-card-hover)] transition-all duration-500 overflow-hidden"
           >
             {/* Real-time mouse hover spotlight highlight */}
             <div 
               className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               style={{
-                background: 'radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(229,9,20,0.15), transparent 70%)'
+                background: 'radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--spotlight), transparent 70%)'
               }}
             ></div>
 
-            <div className="absolute top-0 right-0 p-8 text-white/5 font-mono text-7xl font-black pointer-events-none">
+            <div className="absolute top-0 right-0 p-8 text-[var(--text-main)] opacity-[0.06] font-mono text-7xl font-black pointer-events-none select-none">
               02
             </div>
             
-            <div className="space-y-5 relative z-10">
-              <h3 className="text-xs font-mono uppercase tracking-widest text-red-500 font-bold">Milestones & Accolades</h3>
-              <ul className="space-y-3.5 text-sm text-white/80 font-light">
+            <div className="space-y-4 relative z-10">
+              <h3 className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] font-bold">Milestones &amp; Accolades</h3>
+              <ul className="space-y-3.5 text-sm text-[var(--text-secondary)] font-light">
                 <li className="flex items-start gap-2.5">
-                  <span className="text-red-500 font-bold">&#8250;</span>
-                  <span>National Semi-Finalist in <strong className="text-white">Flipkart GRiD 7.0</strong> competition.</span>
+                  <span className="text-[var(--text-main)] font-bold">&#8250;</span>
+                  <span>National Semi-Finalist in <strong className="text-[var(--text-main)]">Flipkart GRiD 7.0</strong> competition.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <span className="text-red-500 font-bold">&#8250;</span>
-                  <span>Member of the elite <strong className="text-white">AlgoUniversity Tech Fellowship</strong> for advanced algorithms.</span>
+                  <span className="text-[var(--text-main)] font-bold">&#8250;</span>
+                  <span>Member of the elite <strong className="text-[var(--text-main)]">AlgoUniversity Tech Fellowship</strong> for advanced algorithms.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <span className="text-red-500 font-bold">&#8250;</span>
-                  <span>Certified <strong className="text-white">GitHub Foundations</strong> & <strong className="text-white">AWS Certified AI Practitioner</strong>.</span>
+                  <span className="text-[var(--text-main)] font-bold">&#8250;</span>
+                  <span>Certified <strong className="text-[var(--text-main)]">GitHub Foundations</strong> &amp; <strong className="text-[var(--text-main)]">AWS Certified AI Practitioner</strong>.</span>
                 </li>
               </ul>
             </div>
             
-            <div className="pt-6 font-mono text-xs text-white/40 relative z-10">
+            <div className="pt-6 font-mono text-xs text-[var(--text-muted)] relative z-10">
               // SEASON_01 HIGHLIGHTS
             </div>
           </div>
@@ -165,26 +165,26 @@ const About = () => {
           <div
             ref={addToRefs}
             onMouseMove={handleCardMouseMove}
-            className="md:col-span-12 p-8 md:p-12 bg-[#141414]/90 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6 hover:border-red-600/60 transition-all duration-500 overflow-hidden relative group"
+            className="md:col-span-12 p-6 sm:p-8 md:p-10 bg-[var(--bg-card)] backdrop-blur-2xl border border-[var(--border-card)] rounded-[2rem] shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 hover:border-[var(--border-card-hover)] transition-all duration-500 overflow-hidden relative group"
           >
             {/* Real-time mouse hover spotlight highlight */}
             <div 
               className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
               style={{
-                background: 'radial-gradient(500px circle at var(--mouse-x) var(--mouse-y), rgba(229,9,20,0.15), transparent 70%)'
+                background: 'radial-gradient(500px circle at var(--mouse-x) var(--mouse-y), var(--spotlight), transparent 70%)'
               }}
             ></div>
 
-            <div className="space-y-2 text-left relative z-10">
-              <h3 className="text-xs font-mono uppercase tracking-widest text-red-500 font-bold">Production Tech Stack</h3>
-              <p className="text-base md:text-lg font-semibold text-white">Equipped with industry-grade instruments for robust scaling.</p>
+            <div className="space-y-1.5 text-left relative z-10">
+              <h3 className="text-xs font-mono uppercase tracking-widest text-[var(--text-muted)] font-bold">Production Tech Stack</h3>
+              <p className="text-base md:text-lg font-semibold text-[var(--text-main)]">Equipped with industry-grade instruments for robust scaling.</p>
             </div>
             
-            <div className="flex flex-wrap items-center gap-3 relative z-10">
+            <div className="flex flex-wrap items-center gap-2.5 relative z-10">
               {['React', 'Node.js', 'Express', 'PostgreSQL', 'MongoDB', 'Docker', 'JavaScript'].map((tech, idx) => (
                 <span
                   key={idx}
-                  className="px-4 py-2 rounded bg-white/[0.04] border border-white/10 text-xs font-mono uppercase tracking-wider text-white shadow-inner hover:bg-red-600/20 hover:border-red-600/40 hover:scale-105 transition-all"
+                  className="px-4 py-2 rounded-full bg-[var(--badge-bg)] border border-[var(--border-card)] text-xs font-mono uppercase tracking-wider text-[var(--text-main)] hover:border-[var(--border-card-hover)] hover:scale-105 transition-all"
                 >
                   {tech}
                 </span>
