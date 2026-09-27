@@ -1,254 +1,273 @@
-import { useLayoutEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef, useState, useEffect } from 'react';
 
 const skillCategories = [
   { 
     title: 'Frontend Engineering', 
-    desc: 'Crafting responsive and interactive user interfaces using React, JavaScript, HTML5, CSS3, and Tailwind CSS.', 
+    desc: 'Crafting responsive, high-fidelity user interfaces using React, JavaScript, HTML5, modern CSS3, and buttery smooth GSAP motion interactions.', 
     tag: 'UI / INTERACTION',
-    skills: ['React', 'JavaScript', 'Tailwind CSS', 'HTML5', 'CSS3'] 
+    number: '01',
+    skills: ['React', 'JavaScript', 'Tailwind CSS', 'HTML5', 'CSS3', 'GSAP', 'Next.js'] 
   },
   { 
     title: 'Backend & Databases', 
-    desc: 'Building secure REST APIs, authentication flows, server-side applications, and high-performance database architectures.', 
+    desc: 'Building secure REST APIs, enterprise authentication pipelines, high-concurrency microservices, and optimized database architectures across SQL and NoSQL.', 
     tag: 'ARCHITECTURE',
-    skills: ['Node.js', 'Express', 'PostgreSQL', 'MongoDB', 'DQL'] 
+    number: '02',
+    skills: ['Node.js', 'Express', 'PostgreSQL', 'MongoDB', 'REST APIs', 'JWT', 'SQL Optimization'] 
   },
   { 
     title: 'AI & Machine Learning', 
-    desc: 'Developing intelligent applications leveraging NLP, generative AI workflows, computer vision, and LLM systems.', 
+    desc: 'Integrating production-grade LLM workflows, predictive machine learning pipelines, natural language processing, and computer vision systems.', 
     tag: 'INTELLIGENCE',
-    skills: ['NLP', 'Generative AI', 'Computer Vision', 'LLMs', 'AWS AI'] 
+    number: '03',
+    skills: ['NLP', 'Generative AI', 'Computer Vision', 'LLMs', 'AWS AI', 'Python', 'Model Evaluation'] 
   },
   { 
     title: 'Cloud & DevOps', 
-    desc: 'Deploying and scaling production-grade applications using Docker containers, GitHub Actions, and CI/CD pipelines.', 
+    desc: 'Deploying and scaling resilient multi-tenant systems using Docker containers, automated GitHub Actions CI/CD workflows, and optimized cloud infrastructure.', 
     tag: 'INFRASTRUCTURE',
-    skills: ['Docker', 'GitHub', 'CI/CD Pipelines', 'Render', 'Docker Hub'] 
+    number: '04',
+    skills: ['Docker', 'GitHub Actions', 'CI/CD Pipelines', 'Render', 'AWS', 'Linux', 'Vercel'] 
   },
   { 
     title: 'Algorithmic Problem Solving', 
-    desc: 'Optimizing data structures and solving complex algorithmic challenges across competitive programming platforms.', 
+    desc: 'Mastery of advanced data structures, dynamic programming, graph theory, and high-efficiency algorithmic optimization across competitive platforms.', 
     tag: 'COMPETITIVE',
-    skills: ['Data Structures', 'Algorithms', 'LeetCode', 'CodeChef', 'GFG'] 
+    number: '05',
+    skills: ['Data Structures', 'Algorithms', 'LeetCode', 'CodeChef', 'Dynamic Programming', 'Graph Theory'] 
   },
   { 
     title: 'Tools & Ecosystem', 
-    desc: 'Equipped with industry-grade instruments for version control, productivity extensions, and workflow management.', 
+    desc: 'Equipped with industry-grade engineering instruments for version control, productivity extensions, and robust full-stack developer tooling.', 
     tag: 'PRODUCTIVITY',
-    skills: ['Git', 'Chrome APIs', 'Adobe Express', 'Google Cloud', 'VS Code'] 
+    number: '06',
+    skills: ['Git', 'GitHub', 'Chrome APIs', 'VS Code', 'Postman', 'Vite', 'Figma'] 
   },
 ];
 
 const Skills = () => {
-  const sectionRef = useRef(null);
-  const cardsRef = useRef([]);
-  const bgRefs = useRef([]);
-  const textRefs = useRef([]);
+  const containerRef = useRef(null);
+  const [activeIdx, setActiveIdx] = useState(0);
 
-  const handleScroll = (e) => {
-    if (window.innerWidth >= 769) return;
-    const container = e.target;
-    const center = container.scrollLeft + container.offsetWidth / 2;
-    
-    let activeIdx = 0;
-    let minDiff = Infinity;
-    
-    cardsRef.current.forEach((card, i) => {
-      if (!card) return;
-      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-      const diff = Math.abs(cardCenter - center);
-      if (diff < minDiff) {
-        minDiff = diff;
-        activeIdx = i;
-      }
-    });
-
-    cardsRef.current.forEach((card, i) => {
-      if (card) {
-        gsap.to(card, { scale: i === activeIdx ? 1 : 0.9, duration: 0.4, ease: "power2.out", overwrite: "auto" });
-      }
-    });
-
-    bgRefs.current.forEach((bg, i) => {
-      if (bg) gsap.to(bg, { opacity: i === activeIdx ? 1 : 0, duration: 0.4, overwrite: "auto" });
-    });
-    
-    textRefs.current.forEach((txt, i) => {
-      if (txt) gsap.to(txt, { opacity: i === activeIdx ? 1 : 0, duration: 0.4, overwrite: "auto" });
-    });
+  // Scroll to selected card cleanly without lag
+  const scrollToIndex = (idx) => {
+    if (!containerRef.current) return;
+    const cards = containerRef.current.children;
+    if (cards[idx]) {
+      cards[idx].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+      });
+      setActiveIdx(idx);
+    }
   };
 
-  useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
-      let mm = gsap.matchMedia();
+  const handleNext = () => {
+    const nextIdx = (activeIdx + 1) % skillCategories.length;
+    scrollToIndex(nextIdx);
+  };
 
-      mm.add("(min-width: 769px)", () => {
-        const updateCards = (p) => {
-          cardsRef.current.forEach((card, i) => {
-            if (!card) return;
-            const offset = i - p;
-            
-            const radius = Math.min(1800, window.innerWidth * 1.15); 
-            const angleSpread = 16; 
-            
-            const angle = offset * angleSpread;
-            const rad = angle * Math.PI / 180;
-            
-            const x = Math.sin(rad) * radius;
-            const y = radius - (Math.cos(rad) * radius); 
-            const z = -Math.abs(offset) * 50; 
-            
-            const scale = Math.max(0.4, 1 - Math.abs(offset) * 0.15);
-            const rotateZ = angle; 
-            
-            const opacity = Math.max(0.1, 1 - Math.abs(offset) * 0.3);
-            const zIndex = Math.round(100 - Math.abs(offset) * 10);
+  const handlePrev = () => {
+    const prevIdx = (activeIdx - 1 + skillCategories.length) % skillCategories.length;
+    scrollToIndex(prevIdx);
+  };
 
-            gsap.set(card, {
-              x: x,
-              y: y,
-              z: z,
-              scale: scale,
-              rotationZ: rotateZ,
-              rotationY: 0, 
-              opacity: opacity,
-              zIndex: zIndex,
-            });
-          });
+  // Track active slide with a passive, highly efficient scroll observer
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-          bgRefs.current.forEach((bg, i) => {
-              if (!bg) return;
-              const itemOpacity = Math.max(0, 1 - Math.abs(i - p));
-              gsap.set(bg, { opacity: itemOpacity });
-              
-              if (textRefs.current[i]) {
-                  gsap.set(textRefs.current[i], { opacity: itemOpacity });
-              }
-          });
-        };
+    let timeoutId = null;
+    const handleScroll = () => {
+      if (timeoutId) return;
+      timeoutId = setTimeout(() => {
+        timeoutId = null;
+        const center = container.scrollLeft + container.offsetWidth / 2;
+        let closestIdx = 0;
+        let minDiff = Infinity;
 
-        updateCards(0);
-
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "+=500%", 
-          pin: true,
-          scrub: 1,
-          onUpdate: (self) => {
-            const p = self.progress * (skillCategories.length - 1);
-            updateCards(p);
+        Array.from(container.children).forEach((child, i) => {
+          const childCenter = child.offsetLeft + child.offsetWidth / 2;
+          const diff = Math.abs(childCenter - center);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIdx = i;
           }
         });
-      });
+        setActiveIdx(closestIdx);
+      }, 50);
+    };
 
-      mm.add("(max-width: 768px)", () => {
-        cardsRef.current.forEach((card, i) => {
-           if (card) {
-             gsap.set(card, { clearProps: "x,y,z,rotation,scale,opacity,position" });
-             gsap.set(card, { scale: i === 0 ? 1 : 0.9 });
-           }
-        });
-        
-        bgRefs.current.forEach((bg, i) => {
-           if (bg) gsap.set(bg, { clearProps: "all", opacity: i === 0 ? 1 : 0 });
-        });
-        
-        textRefs.current.forEach((txt, i) => {
-           if (txt) gsap.set(txt, { clearProps: "all", opacity: i === 0 ? 1 : 0 });
-        });
-      });
-
-    }, sectionRef);
-
-    return () => ctx.revert();
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
     <section 
       id="skills"
-      ref={sectionRef} 
-      className="relative w-full h-screen bg-[var(--bg-main)] text-[var(--text-main)] overflow-hidden flex items-center justify-center md:[perspective:1000px] select-none transition-colors duration-300"
+      className="relative w-full min-h-screen bg-[var(--bg-main)] text-[var(--text-main)] py-28 md:py-36 px-4 sm:px-6 md:px-12 flex flex-col justify-center select-none overflow-hidden transition-colors duration-300"
     >
-      {/* Dynamic Background Vignettes */}
-      {skillCategories.map((_, i) => (
-        <div 
-          key={i}
-          ref={el => bgRefs.current[i] = el}
-          className="absolute inset-0 z-0 pointer-events-none opacity-0 bg-gradient-to-tr from-[var(--bg-main)] via-[var(--bg-surface)] to-[var(--bg-main)]"
-        />
-      ))}
+      {/* Background Ambient Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-neutral-500/5 rounded-full blur-[180px] pointer-events-none z-0"></div>
 
-      {/* Massive Background Typography */}
-      <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none overflow-hidden">
-        {skillCategories.map((_, i) => (
-          <h1 
-            key={`text-${i}`}
-            ref={el => textRefs.current[i] = el}
-            className="absolute text-[20vw] md:text-[16vw] font-black uppercase text-[var(--text-main)] opacity-[0.04] leading-none tracking-tighter select-none pointer-events-none"
-            style={{ 
-               fontFamily: "'Bebas Neue', sans-serif",
-               opacity: 0 
-            }}
-          >
-            SKILLS
-          </h1>
-        ))}
-      </div>
-
-      {/* Carousel Container */}
-      <div 
-        className="relative w-full h-full flex md:items-center md:justify-center z-10 md:[transform-style:preserve-3d] overflow-x-auto overflow-y-hidden md:overflow-visible snap-x snap-mandatory scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-center px-[8vw] md:px-0 gap-4 md:gap-0 touch-pan-x"
-        onScroll={handleScroll}
-      >
-        {skillCategories.map((category, i) => (
-          <div 
-            key={i}
-            ref={el => cardsRef.current[i] = el}
-            className="md:absolute relative shrink-0 snap-center w-[82vw] sm:w-[340px] md:w-[380px] lg:w-[400px] h-[430px] md:h-[480px] rounded-[28px] p-6 sm:p-8 bg-[var(--bg-card)] backdrop-blur-2xl border border-[var(--border-card)] flex flex-col justify-between overflow-hidden group shadow-lg hover:border-[var(--border-card-hover)] transition-all duration-300"
-          >
-            {/* Top Card Metadata */}
-            <div className="flex items-center justify-between relative z-10">
-              <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[var(--text-secondary)] bg-[var(--badge-bg)] px-3 py-1 rounded-full border border-[var(--border-card)]">
-                {category.tag}
+      <div className="relative z-10 max-w-7xl mx-auto w-full space-y-8 md:space-y-12">
+        
+        {/* Section Header with Big, Prominent Typography */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+          <div className="space-y-4 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--badge-bg)] backdrop-blur-xl border border-[var(--badge-border)] text-xs font-mono uppercase tracking-widest text-[var(--text-main)] shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-ping"></span>
+              <span className="font-bold">EPISODE 03</span>
+              <span className="opacity-40">|</span>
+              <span>CORE ARSENAL</span>
+            </div>
+            <h2 
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-none text-[var(--text-main)]" 
+              style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+            >
+              TECHNICAL DOMAINS &bull; <br />
+              <span className="monochrome-gradient-text tracking-wide">
+                SKILL MATRIX.
               </span>
-              <span className="text-xs font-mono text-[var(--text-muted)]">
-                [ 0{i + 1} / 06 ]
-              </span>
-            </div>
-
-            {/* Middle Title & Description */}
-            <div className="space-y-3.5 relative z-10 my-auto">
-              <h3 className="text-2xl md:text-3xl font-black text-[var(--text-main)] tracking-tight">
-                {category.title}
-              </h3>
-              <p className="text-sm md:text-base text-[var(--text-secondary)] font-light leading-relaxed">
-                {category.desc}
-              </p>
-            </div>
-
-            {/* Bottom Skill Badges */}
-            <div className="flex flex-wrap gap-2 pt-4 border-t border-[var(--border-card)] relative z-10">
-              {category.skills.map((skill, sIdx) => (
-                <span 
-                  key={sIdx}
-                  className="text-xs font-mono text-[var(--text-secondary)] bg-[var(--badge-bg)] border border-[var(--border-card)] px-3 py-1 rounded-full group-hover:border-[var(--border-card-hover)] transition-colors"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-
-            {/* Bottom Dot Accent */}
-            <div className="absolute bottom-4 right-4 w-2 h-2 rounded-full bg-[var(--accent)] opacity-50 group-hover:opacity-100 transition-all" />
+            </h2>
           </div>
-        ))}
-      </div>
 
+          {/* Navigation Controls: Arrows & Status */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={handlePrev}
+              className="p-3 rounded-full border border-[var(--border-card)] bg-[var(--bg-card)] hover:border-[var(--border-card-hover)] text-[var(--text-main)] transition-all cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+              aria-label="Previous skill domain"
+            >
+              <svg className="w-5 h-5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <span className="text-xs sm:text-sm font-mono text-[var(--text-secondary)] px-2">
+              [ 0{activeIdx + 1} / 0{skillCategories.length} ]
+            </span>
+            <button
+              type="button"
+              onClick={handleNext}
+              className="p-3 rounded-full border border-[var(--border-card)] bg-[var(--bg-card)] hover:border-[var(--border-card-hover)] text-[var(--text-main)] transition-all cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+              aria-label="Next skill domain"
+            >
+              <svg className="w-5 h-5 fill-none stroke-current stroke-2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Category Jump Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none]">
+          {skillCategories.map((category, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => scrollToIndex(idx)}
+              className={`shrink-0 px-4 py-2 rounded-full text-xs font-mono uppercase tracking-wider transition-all cursor-pointer border ${
+                activeIdx === idx
+                  ? 'bg-[var(--accent)] text-[var(--accent-contrast)] border-[var(--accent)] font-bold shadow-md'
+                  : 'bg-[var(--badge-bg)] text-[var(--text-secondary)] border-[var(--border-card)] hover:border-[var(--border-card-hover)] hover:text-[var(--text-main)]'
+              }`}
+            >
+              0{idx + 1}. {category.title}
+            </button>
+          ))}
+        </div>
+
+        {/* Buttery Smooth Native GPU Scroll-Snap Carousel Container (Zero Lag) */}
+        <div 
+          ref={containerRef}
+          className="relative w-full flex items-stretch gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth py-4 px-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
+          {skillCategories.map((category, i) => (
+            <div 
+              key={i}
+              className={`shrink-0 snap-center w-[88vw] sm:w-[540px] md:w-[640px] lg:w-[720px] rounded-[2rem] p-8 sm:p-10 md:p-12 bg-[var(--bg-card)] backdrop-blur-2xl border transition-all duration-300 flex flex-col justify-between shadow-xl relative overflow-hidden group ${
+                activeIdx === i 
+                  ? 'border-[var(--border-card-hover)] ring-1 ring-[var(--accent)]/30' 
+                  : 'border-[var(--border-card)] opacity-85 hover:opacity-100'
+              }`}
+            >
+              {/* Massive Watermarked Number in Background */}
+              <div 
+                className="absolute top-2 right-6 text-7xl sm:text-8xl md:text-9xl font-black font-mono text-[var(--text-main)] opacity-[0.05] pointer-events-none select-none"
+              >
+                {category.number}
+              </div>
+
+              {/* Top Meta Badge */}
+              <div className="flex items-center justify-between relative z-10 mb-6">
+                <span className="text-xs sm:text-sm font-mono font-bold tracking-widest uppercase text-[var(--text-main)] bg-[var(--badge-bg)] px-4 py-1.5 rounded-full border border-[var(--border-card)]">
+                  {category.tag}
+                </span>
+                <span className="text-sm font-mono text-[var(--text-muted)]">
+                  [ 0{i + 1} / 06 ]
+                </span>
+              </div>
+
+              {/* Main Prominent Title & Large Fluid Description */}
+              <div className="space-y-4 my-auto relative z-10 py-4">
+                <h3 
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[var(--text-main)] tracking-tight leading-tight"
+                  style={{ fontFamily: "'Bebas Neue', sans-serif" }}
+                >
+                  {category.title}
+                </h3>
+                <p className="text-base sm:text-lg md:text-xl font-light text-[var(--text-secondary)] leading-relaxed max-w-2xl">
+                  {category.desc}
+                </p>
+              </div>
+
+              {/* Bottom Skill Badges (Large, Bold & Interactive) */}
+              <div className="pt-6 border-t border-[var(--border-card)] relative z-10">
+                <div className="text-[11px] font-mono uppercase tracking-widest text-[var(--text-muted)] mb-3">
+                  // TECHNOLOGIES &amp; INSTRUMENTS
+                </div>
+                <div className="flex flex-wrap gap-2.5">
+                  {category.skills.map((skill, sIdx) => (
+                    <span 
+                      key={sIdx}
+                      className="text-xs sm:text-sm md:text-base font-mono font-medium text-[var(--text-main)] bg-[var(--badge-bg)] border border-[var(--border-card)] px-4 py-2 rounded-full hover:border-[var(--border-card-hover)] hover:scale-105 transition-all shadow-sm"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Subtle Corner Accent Dot */}
+              <div className="absolute bottom-4 right-4 w-2 h-2 rounded-full bg-[var(--accent)] opacity-40 group-hover:opacity-100 transition-opacity" />
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom Pagination Dots */}
+        <div className="flex items-center justify-center gap-2 pt-2">
+          {skillCategories.map((_, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => scrollToIndex(idx)}
+              className={`h-2 rounded-full transition-all cursor-pointer ${
+                activeIdx === idx 
+                  ? 'w-8 bg-[var(--accent)]' 
+                  : 'w-2 bg-[var(--border-card)] hover:bg-[var(--border-card-hover)]'
+              }`}
+              aria-label={`Jump to skill card ${idx + 1}`}
+            />
+          ))}
+        </div>
+
+      </div>
     </section>
   );
 };
